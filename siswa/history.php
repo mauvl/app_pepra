@@ -4,16 +4,9 @@ require_once '../includes/functions.php';
 redirectIfNotSiswa();
 
 $nis = $_SESSION['user_id'];
-$db = new Database();
-$conn = $db->getConnection();
 
-// Get aspirasi by siswa
-$sql = "SELECT a.*, k.nama_kategori 
-        FROM aspirasi a 
-        JOIN kategori k ON a.id_kategori = k.id_kategori
-        WHERE a.nis = '$nis'
-        ORDER BY a.tanggal_dibuat DESC";
-$result = $conn->query($sql);
+// Get aspirasi for current siswa using Functions helper
+$aspirasi = functions()->getAspirasiBySiswa($nis);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -37,7 +30,7 @@ $result = $conn->query($sql);
             </a>
         </div>
         
-        <?php if ($result->num_rows > 0): ?>
+        <?php if (count($aspirasi) > 0): ?>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -54,7 +47,7 @@ $result = $conn->query($sql);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
+                        <?php foreach ($aspirasi as $row): ?>
                         <tr>
                             <td>#<?php echo str_pad($row['id_aspirasi'], 4, '0', STR_PAD_LEFT); ?></td>
                             <td><?php echo date('d/m/Y', strtotime($row['tanggal_dibuat'])); ?></td>
@@ -97,7 +90,7 @@ $result = $conn->query($sql);
                                 </a>
                             </td>
                         </tr>
-                        <?php endwhile; ?>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

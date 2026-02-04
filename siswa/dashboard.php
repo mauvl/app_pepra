@@ -4,7 +4,7 @@ require_once '../includes/functions.php';
 redirectIfNotSiswa();
 
 $nis = $_SESSION['user_id'];
-$aspirasi = getAspirasiBySiswa($nis);
+$aspirasi = functions()->getAspirasiBySiswa($nis);
 
 // Hitung statistik
 $total = $aspirasi[0]['total'] ?? 0;

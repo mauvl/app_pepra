@@ -58,12 +58,12 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                         
                     <?php elseif ($role == 'siswa'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="siswa/dashboard.php">
+                            <a class="nav-link" href="../siswa/dashboard.php">
                                 <i class="bi bi-speedometer2"></i> Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="siswa/input_aspirasi.php">
+                            <a class="nav-link" href="../siswa/input_aspirasi.php">
                                 <i class="bi bi-plus-circle"></i> Ajukan Aspirasi
                             </a>
                         </li>
@@ -78,7 +78,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                             </span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="logout.php">
+                            <a class="nav-link" href="../logout.php">
                                 <i class="bi bi-box-arrow-right"></i> Logout
                             </a>
                         </li>

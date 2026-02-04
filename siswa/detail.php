@@ -11,16 +11,13 @@ if (!isset($_GET['id'])) {
 $id = intval($_GET['id']);
 $nis = $_SESSION['user_id'];
 
-$db = new Database();
-$conn = $db->getConnection();
+// Fetch aspirasi using the Functions helper and ensure ownership
+$aspirasi = functions()->getAspirasiById($id);
 
-// Get aspirasi data (only if belongs to current siswa)
-$sql = "SELECT a.*, k.nama_kategori 
-        FROM aspirasi a 
-        JOIN kategori k ON a.id_kategori = k.id_kategori
-        WHERE a.id_aspirasi = '$id' AND a.nis = '$nis'";
-$result = $conn->query($sql);
-$aspirasi = $result->fetch_assoc();
+if (!$aspirasi || $aspirasi['nis'] != $nis) {
+    header('Location: history.php');
+    exit();
+}
 
 if (!$aspirasi) {
     header('Location: history.php');
@@ -28,14 +25,8 @@ if (!$aspirasi) {
 }
 
 // Get progress history
-$sql_progres = "SELECT * FROM progres 
-                WHERE id_aspirasi = '$id' 
-                ORDER BY tanggal ASC";
-$result_progres = $conn->query($sql_progres);
-$progres = [];
-while ($row = $result_progres->fetch_assoc()) {
-    $progres[] = $row;
-}
+$sql_progres = "SELECT * FROM progres WHERE id_aspirasi = ? ORDER BY tanggal ASC";
+$progres = db()->fetchAll($sql_progres, [$id]);
 ?>
 <!DOCTYPE html>
 <html lang="id">

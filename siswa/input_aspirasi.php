@@ -3,7 +3,11 @@ require_once '../config/session.php';
 require_once '../includes/functions.php';
 redirectIfNotSiswa();
 
-$kategori = getKategori();
+
+$functions = new Functions();
+$kategori = $functions->getKategori();
+
+
 $success = false;
 $error = '';
 
@@ -15,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'deskripsi' => $_POST['deskripsi']
     ];
     
-    if (addAspirasi($data)) {
+    if ($result = $functions->addAspirasi($data)) {
         $success = true;
     } else {
         $error = 'Gagal mengajukan aspirasi. Silakan coba lagi.';

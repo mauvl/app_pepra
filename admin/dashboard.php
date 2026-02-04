@@ -3,7 +3,8 @@ require_once '../config/session.php';
 require_once '../includes/functions.php';
 redirectIfNotAdmin();
 
-$stats = getStats();
+$functions = new Functions();
+$stats = $functions->getStats();
 ?>
 <!DOCTYPE html>
 <html lang="id">
