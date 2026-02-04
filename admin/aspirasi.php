@@ -3,8 +3,10 @@ require_once '../config/session.php';
 require_once '../includes/functions.php';
 redirectIfNotAdmin();
 
-$db = new Database();
-$conn = $db->getConnection();
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 // Filter parameters
 $filter_status = isset($_GET['status']) ? $_GET['status'] : '';
@@ -19,24 +21,25 @@ $sql = "SELECT a.*, k.nama_kategori, s.nama, s.kelas
         WHERE 1=1";
 
 if (!empty($filter_status)) {
-    $status = $db->escape($filter_status);
+    $status = $conn->real_escape_string($filter_status);
     $sql .= " AND a.status = '$status'";
 }
 
 if (!empty($filter_kategori)) {
-    $kategori = $db->escape($filter_kategori);
+    $kategori = $conn->real_escape_string($filter_kategori);
     $sql .= " AND a.id_kategori = '$kategori'";
 }
 
 if (!empty($filter_tanggal)) {
-    $tanggal = $db->escape($filter_tanggal);
+    $tanggal = $conn->real_escape_string($filter_tanggal);
     $sql .= " AND DATE(a.tanggal_dibuat) = '$tanggal'";
 }
 
 $sql .= " ORDER BY a.tanggal_dibuat DESC";
 
 $result = $conn->query($sql);
-$kategori_list = getKategori();
+$kategori_query = $conn->query("SELECT id_kategori, nama_kategori FROM kategori");
+$kategori_list = $kategori_query->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="id">

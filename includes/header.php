@@ -31,17 +31,17 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                 <ul class="navbar-nav ms-auto">
                     <?php if ($role == 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="admin/dashboard.php">
+                            <a class="nav-link" href="../admin/dashboard.php">
                                 <i class="bi bi-speedometer2"></i> Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="admin/aspirasi.php">
+                            <a class="nav-link" href="../admin/aspirasi.php">
                                 <i class="bi bi-list-check"></i> Aspirasi
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="admin/filter.php">
+                            <a class="nav-link" href="../admin/filter.php">
                                 <i class="bi bi-funnel"></i> Filter
                             </a>
                         </li>

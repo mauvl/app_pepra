@@ -3,52 +3,94 @@ require_once '../config/session.php';
 require_once '../includes/functions.php';
 redirectIfNotAdmin();
 
-$db = new Database();
+// Update the path below if Database.php is located elsewhere, e.g., in the same directory or another foldertikan file ini ada dan berisi class Database
+$db = Database::getInstance();
 $conn = $db->getConnection();
 
 // Filter parameters
-$filter_status = $_GET['status'] ?? '';
-$filter_kategori = $_GET['kategori'] ?? '';
-$filter_tanggal = $_GET['tanggal'] ?? '';
-$filter_bulan = $_GET['bulan'] ?? '';
-$filter_nis = $_GET['nis'] ?? '';
+$filter_status = isset($_GET['status']) ? trim($_GET['status']) : '';
+$filter_kategori = isset($_GET['kategori']) ? trim($_GET['kategori']) : '';
+$filter_tanggal = isset($_GET['tanggal']) ? trim($_GET['tanggal']) : '';
+$filter_bulan = isset($_GET['bulan']) ? trim($_GET['bulan']) : '';
+$filter_nis = isset($_GET['nis']) ? trim($_GET['nis']) : '';
 
-// Build query
+// Build query with prepared statement
 $sql = "SELECT a.*, k.nama_kategori, s.nama, s.kelas 
         FROM aspirasi a 
         JOIN kategori k ON a.id_kategori = k.id_kategori
         JOIN siswa s ON a.nis = s.nis 
         WHERE 1=1";
 
+$types = '';
+$params = [];
+
 if (!empty($filter_status)) {
-    $status = $db->escape($filter_status);
-    $sql .= " AND a.status = '$status'";
+    $sql .= " AND a.status = ?";
+    $types .= 's';
+    $params[] = $filter_status;
 }
 
 if (!empty($filter_kategori)) {
-    $kategori = $db->escape($filter_kategori);
-    $sql .= " AND a.id_kategori = '$kategori'";
+    $sql .= " AND a.id_kategori = ?";
+    $types .= 's';
+    $params[] = $filter_kategori;
 }
 
 if (!empty($filter_tanggal)) {
-    $tanggal = $db->escape($filter_tanggal);
-    $sql .= " AND DATE(a.tanggal_dibuat) = '$tanggal'";
+    $sql .= " AND DATE(a.tanggal_dibuat) = ?";
+    $types .= 's';
+    $params[] = $filter_tanggal;
 }
 
 if (!empty($filter_bulan)) {
-    $bulan = $db->escape($filter_bulan);
-    $sql .= " AND DATE_FORMAT(a.tanggal_dibuat, '%Y-%m') = '$bulan'";
+    $sql .= " AND DATE_FORMAT(a.tanggal_dibuat, '%Y-%m') = ?";
+    $types .= 's';
+    $params[] = $filter_bulan;
 }
 
 if (!empty($filter_nis)) {
-    $nis = $db->escape($filter_nis);
-    $sql .= " AND a.nis LIKE '%$nis%'";
+    $sql .= " AND a.nis LIKE ?";
+    $types .= 's';
+    $filter_nis_search = '%' . $filter_nis . '%';
+    $params[] = $filter_nis_search;
 }
 
 $sql .= " ORDER BY a.tanggal_dibuat DESC";
 
-$result = $conn->query($sql);
-$kategori_list = getKategori();
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die('Query preparation failed: ' . $conn->error);
+}
+if ($types) {
+    // bind_param requires variables to be passed by reference
+    $bind_params = [];
+    $bind_params[] = $types;
+    foreach ($params as $key => $value) {
+        $bind_params[] = &$params[$key];
+    }
+    call_user_func_array([$stmt, 'bind_param'], $bind_params);
+}
+if (!$stmt->execute()) {
+    die('Query execution failed: ' . $stmt->error);
+}
+$result = $stmt->get_result();
+if (!$result) {
+    $result = new class {
+        public $num_rows = 0;
+        public function data_seek($_n) {}
+        public function fetch_assoc() { return false; }
+    };
+}
+
+// Fetch kategori list
+$kategori_query = "SELECT id_kategori, nama_kategori FROM kategori ORDER BY nama_kategori ASC";
+$kategori_result = $conn->query($kategori_query);
+$kategori_list = [];
+if ($kategori_result->num_rows > 0) {
+    while ($row = $kategori_result->fetch_assoc()) {
+        $kategori_list[] = $row;
+    }
+}
 
 // Get statistics
 $stats = [
@@ -113,9 +155,9 @@ if ($result->num_rows > 0) {
                         <select name="kategori" class="form-select">
                             <option value="">Semua Kategori</option>
                             <?php foreach ($kategori_list as $kat): ?>
-                            <option value="<?php echo $kat['id_kategori']; ?>" 
+                            <option value="<?php echo htmlspecialchars($kat['id_kategori']); ?>" 
                                 <?php echo ($filter_kategori == $kat['id_kategori']) ? 'selected' : ''; ?>>
-                                <?php echo $kat['nama_kategori']; ?>
+                                <?php echo htmlspecialchars($kat['nama_kategori']); ?>
                             </option>
                             <?php endforeach; ?>
                         </select>
@@ -123,18 +165,18 @@ if ($result->num_rows > 0) {
                     
                     <div class="col-md-2">
                         <label class="form-label">Tanggal</label>
-                        <input type="date" name="tanggal" class="form-control" value="<?php echo $filter_tanggal; ?>">
+                        <input type="date" name="tanggal" class="form-control" value="<?php echo htmlspecialchars($filter_tanggal); ?>">
                     </div>
                     
                     <div class="col-md-2">
                         <label class="form-label">Bulan</label>
-                        <input type="month" name="bulan" class="form-control" value="<?php echo $filter_bulan; ?>">
+                        <input type="month" name="bulan" class="form-control" value="<?php echo htmlspecialchars($filter_bulan); ?>">
                     </div>
                     
                     <div class="col-md-2">
                         <label class="form-label">NIS</label>
-                        <input type="text" name="nis" class="form-control" value="<?php echo $filter_nis; ?>" 
-                               placeholder="NIS Siswa">
+                        <input type="text" name="nis" class="form-control" value="<?php echo htmlspecialchars($filter_nis); ?>" 
+                                   placeholder="NIS Siswa">
                     </div>
                     
                     <div class="col-12">
@@ -227,11 +269,11 @@ if ($result->num_rows > 0) {
                                 <tr>
                                     <td>#<?php echo str_pad($row['id_aspirasi'], 4, '0', STR_PAD_LEFT); ?></td>
                                     <td><?php echo date('d/m/Y', strtotime($row['tanggal_dibuat'])); ?></td>
-                                    <td><?php echo $row['nis']; ?></td>
-                                    <td><?php echo $row['nama']; ?></td>
-                                    <td><?php echo $row['kelas']; ?></td>
-                                    <td><?php echo $row['nama_kategori']; ?></td>
-                                    <td><?php echo $row['lokasi']; ?></td>
+                                    <td><?php echo htmlspecialchars($row['nis']); ?></td>
+                                                    <td><?php echo htmlspecialchars($row['nama']); ?></td>
+                                                    <td><?php echo htmlspecialchars($row['kelas']); ?></td>
+                                                    <td><?php echo htmlspecialchars($row['nama_kategori']); ?></td>
+                                                    <td><?php echo htmlspecialchars($row['lokasi']); ?></td>
                                     <td>
                                         <span class="badge badge-<?php echo strtolower($row['status']); ?>">
                                             <?php echo $row['status']; ?>
