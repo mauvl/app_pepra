@@ -1,0 +1,203 @@
+:root {
+    --primary-color: #FFC107;
+    --primary-dark: #FFA000;
+    --primary-light: #FFECB3;
+    --secondary-color: #2196F3;
+    --dark-color: #333;
+    --light-color: #f8f9fa;
+    --success-color: #4CAF50;
+    --warning-color: #ff9800;
+    --danger-color: #f44336;
+    --gray-color: #6c757d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: var(--dark-color);
+}
+
+/* Header & Navigation */
+.navbar {
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    color: var(--primary-color) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--dark-color) !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Status Badges */
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.badge-menunggu {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+.badge-proses {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.badge-selesai {
+    background-color: var(--success-color);
+    color: white;
+}
+
+/* Progress Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--primary-light);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+/* Dashboard Stats */
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 10px;
+    color: white;
+}
+
+.stat-card.total {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+}
+
+.stat-card.menunggu {
+    background: linear-gradient(45deg, var(--warning-color), #ffb74d);
+}
+
+.stat-card.proses {
+    background: linear-gradient(45deg, var(--secondary-color), #64b5f6);
+}
+
+.stat-card.selesai {
+    background: linear-gradient(45deg, var(--success-color), #81c784);
+}
+
+.stat-card i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card .number {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+/* Forms */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+/* Footer */
+.footer {
+    background-color: white;
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .card-header {
+        padding: 0.75rem 1rem;
+    }
+}
