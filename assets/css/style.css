@@ -191,6 +191,19 @@ body {
     margin-top: 2rem;
 }
 
+/* Utility Colors */
+.text-light {
+    color: var(--light-color);
+}
+
+.text-danger {
+    color: var(--danger-color);
+}
+
+.bg-danger {
+    background-color: var(--danger-color);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .stat-card {

@@ -13,6 +13,7 @@ $stats = $functions->getStats();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - Pengaduan Sarana</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -132,32 +133,10 @@ $stats = $functions->getStats();
                     </div>
                 </div>
             </div>
-            
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="bi bi-lightning"></i> Quick Actions
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="aspirasi.php?status=Menunggu" class="btn btn-outline-warning">
-                                <i class="bi bi-clock"></i> Lihat Aspirasi Menunggu
-                                <span class="badge bg-warning ms-2"><?php echo $stats['Menunggu'] ?? 0; ?></span>
-                            </a>
-                            <a href="aspirasi.php?status=Proses" class="btn btn-outline-primary">
-                                <i class="bi bi-gear"></i> Lihat Aspirasi Diproses
-                                <span class="badge bg-primary ms-2"><?php echo $stats['Proses'] ?? 0; ?></span>
-                            </a>
-                            <a href="filter.php" class="btn btn-outline-success">
-                                <i class="bi bi-funnel"></i> Filter Data
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="card mt-3">
                     <div class="card-header">
-                        <i class="bi-info-circle"></i> Informasi
+                        <i class="bi bi-info-circle"></i> Informasi
                     </div>
                     <div class="card-body">
                         <small>
@@ -173,6 +152,5 @@ $stats = $functions->getStats();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 </body>
 </html>

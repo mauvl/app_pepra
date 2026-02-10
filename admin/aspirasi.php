@@ -20,24 +20,35 @@ $sql = "SELECT a.*, k.nama_kategori, s.nama, s.kelas
         JOIN siswa s ON a.nis = s.nis 
         WHERE 1=1";
 
+$params = [];
+$types = '';
+
 if (!empty($filter_status)) {
-    $status = $conn->real_escape_string($filter_status);
-    $sql .= " AND a.status = '$status'";
+    $sql .= " AND a.status = ?";
+    $params[] = $filter_status;
+    $types .= 's';
 }
 
 if (!empty($filter_kategori)) {
-    $kategori = $conn->real_escape_string($filter_kategori);
-    $sql .= " AND a.id_kategori = '$kategori'";
+    $sql .= " AND a.id_kategori = ?";
+    $params[] = $filter_kategori;
+    $types .= 's';
 }
 
 if (!empty($filter_tanggal)) {
-    $tanggal = $conn->real_escape_string($filter_tanggal);
-    $sql .= " AND DATE(a.tanggal_dibuat) = '$tanggal'";
+    $sql .= " AND DATE(a.tanggal_dibuat) = ?";
+    $params[] = $filter_tanggal;
+    $types .= 's';
 }
 
 $sql .= " ORDER BY a.tanggal_dibuat DESC";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
 $kategori_query = $conn->query("SELECT id_kategori, nama_kategori FROM kategori");
 $kategori_list = $kategori_query->fetch_all(MYSQLI_ASSOC);
 ?>

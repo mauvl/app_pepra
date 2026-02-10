@@ -23,7 +23,6 @@ $sql = "SELECT a.*, k.nama_kategori, s.nama, s.kelas
 
 $types = '';
 $params = [];
-
 if (!empty($filter_status)) {
     $sql .= " AND a.status = ?";
     $types .= 's';

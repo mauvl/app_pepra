@@ -9,7 +9,8 @@ if (!isset($_GET['id'])) {
 }
 
 $id = intval($_GET['id']);
-$db = new Database();
+// Use getInstance() if Database uses singleton pattern
+$db = Database::getInstance();
 $conn = $db->getConnection();
 
 // Get aspirasi data
@@ -17,8 +18,11 @@ $sql = "SELECT a.*, k.nama_kategori, s.nama, s.kelas, s.nis
         FROM aspirasi a 
         JOIN kategori k ON a.id_kategori = k.id_kategori
         JOIN siswa s ON a.nis = s.nis 
-        WHERE a.id_aspirasi = '$id'";
-$result = $conn->query($sql);
+        WHERE a.id_aspirasi = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
 $aspirasi = $result->fetch_assoc();
 
 if (!$aspirasi) {
@@ -28,9 +32,12 @@ if (!$aspirasi) {
 
 // Get progress history
 $sql_progres = "SELECT * FROM progres 
-                WHERE id_aspirasi = '$id' 
+                WHERE id_aspirasi = ? 
                 ORDER BY tanggal ASC";
-$result_progres = $conn->query($sql_progres);
+$stmt_progres = $conn->prepare($sql_progres);
+$stmt_progres->bind_param("i", $id);
+$stmt_progres->execute();
+$result_progres = $stmt_progres->get_result();
 $progres = [];
 while ($row = $result_progres->fetch_assoc()) {
     $progres[] = $row;
@@ -64,16 +71,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Update aspirasi
-    $sql_update = "UPDATE aspirasi SET status = '$status'";
-    if ($feedback) {
-        $sql_update .= ", feedback = '$feedback'";
-    }
     if ($bukti_file) {
-        $sql_update .= ", bukti_selesai = '$bukti_file'";
+        $sql_update = "UPDATE aspirasi SET status = ?, feedback = ?, bukti_selesai = ? WHERE id_aspirasi = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("sssi", $status, $feedback, $bukti_file, $id);
+    } elseif ($feedback) {
+        $sql_update = "UPDATE aspirasi SET status = ?, feedback = ? WHERE id_aspirasi = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("ssi", $status, $feedback, $id);
+    } else {
+        $sql_update = "UPDATE aspirasi SET status = ? WHERE id_aspirasi = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("si", $status, $id);
     }
-    $sql_update .= " WHERE id_aspirasi = '$id'";
     
-    if ($conn->query($sql_update)) {
+    if ($stmt_update->execute()) {
         // Add to progress history
         $keterangan = "Status diubah menjadi: $status";
         if ($feedback) {
@@ -81,8 +93,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $sql_progres = "INSERT INTO progres (id_aspirasi, status, keterangan, dibuat_oleh) 
-                       VALUES ('$id', '$status', '$keterangan', 'Admin')";
-        $conn->query($sql_progres);
+                       VALUES (?, ?, ?, 'Admin')";
+        $stmt_progres_insert = $conn->prepare($sql_progres);
+        $stmt_progres_insert->bind_param("iss", $id, $status, $keterangan);
+        $stmt_progres_insert->execute();
         
         $success_message = "Status berhasil diupdate!";
         header("Location: detail_aspirasi.php?id=$id&success=1");
