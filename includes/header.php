@@ -40,11 +40,6 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                                 <i class="bi bi-list-check"></i> Aspirasi
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../admin/filter.php">
-                                <i class="bi bi-funnel"></i> Filter
-                            </a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle"></i> <?php echo $nama; ?>
