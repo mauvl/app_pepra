@@ -85,7 +85,7 @@ if (isset($_SESSION['role'])) {
 
     <footer class="footer">
         <div class="container text-center">
-            <p class="mb-0">&copy; <?php echo date('Y'); ?> Sistem Pengaduan Sarana Sekolah. SMK Teknologi Informasi.</p>
+            <p class="mb-0">&copy; <?php echo date('Y'); ?> Sistem Pengaduan Sarana Sekolah. Maulida Safa Azzahra.</p>
         </div>
     </footer>
 

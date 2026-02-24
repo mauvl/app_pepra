@@ -88,14 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                 </div>
-                
-                <div class="text-center mt-3">
-                    <p class="text-muted">
-                        <small>Demo Login:<br>
-                        Admin: admin / password123<br>
-                        Siswa: 1234567890 / password123</small>
-                    </p>
-                </div>
             </div>
         </div>
     </div>

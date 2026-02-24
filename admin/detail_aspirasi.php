@@ -30,7 +30,7 @@ if (!$aspirasi) {
     exit();
 }
 
-// Get progress history
+// Get progress history (termasuk bukti_progres)
 $sql_progres = "SELECT * FROM progres 
                 WHERE id_aspirasi = ? 
                 ORDER BY tanggal ASC";
@@ -48,8 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $status = $db->escape($_POST['status']);
     $feedback = isset($_POST['feedback']) ? $db->escape($_POST['feedback']) : null;
     
-    // Handle file upload
-    $bukti_file = null;
+    // Handle file upload untuk progres
+    $bukti_progres = null;
     if (isset($_FILES['bukti_file']) && $_FILES['bukti_file']['error'] == 0) {
         $upload_dir = '../uploads/';
         if (!file_exists($upload_dir)) {
@@ -65,44 +65,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if (in_array($file_type, $allowed_types)) {
             if (move_uploaded_file($_FILES['bukti_file']['tmp_name'], $target_file)) {
-                $bukti_file = $file_name;
+                $bukti_progres = $file_name;
             }
         }
     }
     
-    // Update aspirasi
-    if ($bukti_file) {
-        $sql_update = "UPDATE aspirasi SET status = ?, feedback = ?, bukti_selesai = ? WHERE id_aspirasi = ?";
-        $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("sssi", $status, $feedback, $bukti_file, $id);
-    } elseif ($feedback) {
-        $sql_update = "UPDATE aspirasi SET status = ?, feedback = ? WHERE id_aspirasi = ?";
-        $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("ssi", $status, $feedback, $id);
-    } else {
-        $sql_update = "UPDATE aspirasi SET status = ? WHERE id_aspirasi = ?";
-        $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("si", $status, $id);
+    // Siapkan keterangan untuk progres
+    $keterangan = "Status diubah menjadi: $status";
+    if (!empty($feedback)) {
+        $keterangan .= " | Feedback: " . substr($feedback, 0, 100);
     }
     
-    if ($stmt_update->execute()) {
-        // Add to progress history
-        $keterangan = "Status diubah menjadi: $status";
-        if ($feedback) {
-            $keterangan .= " | Feedback: " . substr($feedback, 0, 100);
+    // Insert ke tabel progres (dengan bukti_progres jika ada)
+    $sql_progres_insert = "INSERT INTO progres (id_aspirasi, status, keterangan, dibuat_oleh, bukti_progres) 
+                           VALUES (?, ?, ?, 'Admin', ?)";
+    $stmt_progres_insert = $conn->prepare($sql_progres_insert);
+    $stmt_progres_insert->bind_param("isss", $id, $status, $keterangan, $bukti_progres);
+    
+    if ($stmt_progres_insert->execute()) {
+        // Update status dan feedback di tabel aspirasi (tanpa mengubah bukti_selesai)
+        if (!empty($feedback)) {
+            $sql_update = "UPDATE aspirasi SET status = ?, feedback = ? WHERE id_aspirasi = ?";
+            $stmt_update = $conn->prepare($sql_update);
+            $stmt_update->bind_param("ssi", $status, $feedback, $id);
+        } else {
+            $sql_update = "UPDATE aspirasi SET status = ? WHERE id_aspirasi = ?";
+            $stmt_update = $conn->prepare($sql_update);
+            $stmt_update->bind_param("si", $status, $id);
         }
         
-        $sql_progres = "INSERT INTO progres (id_aspirasi, status, keterangan, dibuat_oleh) 
-                       VALUES (?, ?, ?, 'Admin')";
-        $stmt_progres_insert = $conn->prepare($sql_progres);
-        $stmt_progres_insert->bind_param("iss", $id, $status, $keterangan);
-        $stmt_progres_insert->execute();
-        
-        $success_message = "Status berhasil diupdate!";
-        header("Location: detail_aspirasi.php?id=$id&success=1");
-        exit();
+        if ($stmt_update->execute()) {
+            header("Location: detail_aspirasi.php?id=$id&success=1");
+            exit();
+        } else {
+            $error_message = "Gagal mengupdate status aspirasi: " . $conn->error;
+        }
     } else {
-        $error_message = "Gagal mengupdate status: " . $conn->error;
+        $error_message = "Gagal mencatat progres: " . $conn->error;
     }
 }
 ?>
@@ -151,6 +150,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <th>Kategori</th>
                                         <td><?php echo $aspirasi['nama_kategori']; ?></td>
                                     </tr>
+                                    <!-- Tampilkan Bukti Awal -->
+                                    <tr>
+                                        <th>Bukti Awal</th>
+                                        <td>
+                                            <?php if (!empty($aspirasi['bukti_awal'])): ?>
+                                                <a href="../uploads/<?php echo $aspirasi['bukti_awal']; ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-file-earmark-image"></i> Lihat Bukti
+                                                </a>
+                                            <?php else: ?>
+                                                Tidak ada
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <div class="col-md-6">
@@ -171,14 +183,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <th>Tanggal</th>
                                         <td><?php echo date('d/m/Y H:i', strtotime($aspirasi['tanggal_dibuat'])); ?></td>
                                     </tr>
-                                    <?php if ($aspirasi['bukti_selesai']): ?>
+                                    <?php if (!empty($aspirasi['bukti_selesai'])): ?>
                                     <tr>
-                                        <th>Bukti</th>
+                                        <th>Bukti Lama</th>
                                         <td>
                                             <a href="../uploads/<?php echo $aspirasi['bukti_selesai']; ?>" 
                                                target="_blank" class="btn btn-sm btn-outline-warning">
                                                 <i class="bi bi-file-earmark"></i> Lihat
                                             </a>
+                                            <small class="d-block text-muted">(Bukti dari sistem lama)</small>
                                         </td>
                                     </tr>
                                     <?php endif; ?>
@@ -193,9 +206,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                         
-                        <?php if ($aspirasi['feedback']): ?>
+                        <?php if (!empty($aspirasi['feedback'])): ?>
                         <div class="mt-3">
-                            <label class="form-label"><strong>Feedback Sebelumnya:</strong></label>
+                            <label class="form-label"><strong>Feedback Terakhir:</strong></label>
                             <div class="alert alert-warning">
                                 <?php echo nl2br($aspirasi['feedback']); ?>
                             </div>
@@ -215,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="timeline">
                             <?php if (count($progres) > 0): ?>
                                 <?php foreach ($progres as $p): ?>
-                                <div class="timeline-item">
+                                <div class="timeline-item mb-3">
                                     <div class="d-flex justify-content-between">
                                         <h6 class="mb-1"><?php echo $p['status']; ?></h6>
                                         <small class="text-muted">
@@ -223,9 +236,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </small>
                                     </div>
                                     <p class="mb-1"><?php echo $p['keterangan']; ?></p>
+                                    <?php if (!empty($p['bukti_progres'])): ?>
+                                        <div class="mt-2">
+                                            <a href="../uploads/<?php echo $p['bukti_progres']; ?>" target="_blank" class="btn btn-sm btn-outline-info">
+                                                <i class="bi bi-file-earmark-image"></i> Lihat Bukti Progres
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
                                     <small class="text-muted">
                                         Oleh: <?php echo $p['dibuat_oleh']; ?>
                                     </small>
+                                    <hr class="my-2">
                                 </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -272,9 +293,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                             
                             <div class="mb-3">
-                                <label class="form-label">Upload Bukti (Jika Selesai)</label>
+                                <label class="form-label">Upload Bukti (Opsional)</label>
                                 <input type="file" name="bukti_file" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
-                                <small class="text-muted">Format: JPG, PNG, PDF (Max: 5MB)</small>
+                                <small class="text-muted">Format: JPG, PNG, PDF (Max: 5MB) - Bukti ini akan muncul di timeline progres.</small>
                             </div>
                             
                             <div class="d-grid gap-2">
@@ -297,19 +318,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </h6>
                     </div>
                     <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="mailto:<?php echo $aspirasi['nis']; ?>@student.sch.id" 
-                               class="btn btn-outline-warning">
-                                <i class="bi bi-envelope"></i> Email Siswa
-                            </a>
-                            <a href="aspirasi.php?status=<?php echo $aspirasi['status']; ?>" 
-                               class="btn btn-outline-secondary">
-                                <i class="bi bi-list"></i> Lihat Status Serupa
-                            </a>
-                        </div>
-                        
-                        <hr>
-                        
                         <div class="alert alert-info">
                             <small>
                                 <strong>Status Menunggu:</strong> Aspirasi baru, belum ditinjau<br>

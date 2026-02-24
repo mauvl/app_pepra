@@ -19,12 +19,7 @@ if (!$aspirasi || $aspirasi['nis'] != $nis) {
     exit();
 }
 
-if (!$aspirasi) {
-    header('Location: history.php');
-    exit();
-}
-
-// Get progress history
+// Get progress history (including bukti_progres)
 $sql_progres = "SELECT * FROM progres WHERE id_aspirasi = ? ORDER BY tanggal ASC";
 $progres = db()->fetchAll($sql_progres, [$id]);
 ?>
@@ -78,6 +73,19 @@ $progres = db()->fetchAll($sql_progres, [$id]);
                                         <th>Lokasi</th>
                                         <td><?php echo $aspirasi['lokasi']; ?></td>
                                     </tr>
+                                    <!-- Tampilkan Bukti Awal -->
+                                    <tr>
+                                        <th>Bukti Awal</th>
+                                        <td>
+                                            <?php if (!empty($aspirasi['bukti_awal'])): ?>
+                                                <a href="../uploads/<?php echo $aspirasi['bukti_awal']; ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-file-earmark-image"></i> Lihat Bukti
+                                                </a>
+                                            <?php else: ?>
+                                                Tidak ada
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <div class="col-md-6">
@@ -94,14 +102,15 @@ $progres = db()->fetchAll($sql_progres, [$id]);
                                         <th>Terakhir Diupdate</th>
                                         <td><?php echo date('d/m/Y H:i', strtotime($aspirasi['tanggal_diupdate'])); ?></td>
                                     </tr>
-                                    <?php if ($aspirasi['bukti_selesai']): ?>
+                                    <?php if (!empty($aspirasi['bukti_selesai'])): ?>
                                     <tr>
-                                        <th>Bukti</th>
+                                        <th>Bukti Lama</th>
                                         <td>
                                             <a href="../uploads/<?php echo $aspirasi['bukti_selesai']; ?>" 
                                                target="_blank" class="btn btn-sm btn-outline-success">
-                                                <i class="bi bi-image"></i> Lihat Bukti
+                                                <i class="bi bi-image"></i> Lihat
                                             </a>
+                                            <small class="d-block text-muted">(Bukti dari sistem lama)</small>
                                         </td>
                                     </tr>
                                     <?php endif; ?>
@@ -139,7 +148,7 @@ $progres = db()->fetchAll($sql_progres, [$id]);
                         <div class="timeline">
                             <?php if (count($progres) > 0): ?>
                                 <?php foreach ($progres as $p): ?>
-                                <div class="timeline-item">
+                                <div class="timeline-item mb-3">
                                     <div class="d-flex justify-content-between">
                                         <h6 class="mb-1 text-primary"><?php echo $p['status']; ?></h6>
                                         <small class="text-muted">
@@ -147,9 +156,17 @@ $progres = db()->fetchAll($sql_progres, [$id]);
                                         </small>
                                     </div>
                                     <p class="mb-1"><?php echo $p['keterangan']; ?></p>
+                                    <?php if (!empty($p['bukti_progres'])): ?>
+                                        <div class="mt-2">
+                                            <a href="../uploads/<?php echo $p['bukti_progres']; ?>" target="_blank" class="btn btn-sm btn-outline-info">
+                                                <i class="bi bi-file-earmark-image"></i> Lihat Bukti Progres
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
                                     <small class="text-muted">
                                         <i class="bi bi-person"></i> Oleh: <?php echo $p['dibuat_oleh']; ?>
                                     </small>
+                                    <hr class="my-2">
                                 </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
