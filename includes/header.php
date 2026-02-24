@@ -19,7 +19,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand text-warning fw-bold" href="<?php echo ($role == 'admin') ? 'admin/dashboard.php' : (($role == 'siswa') ? 'siswa/dashboard.php' : 'index.php'); ?>">
+            <a class="navbar-brand text-warning fw-bold" href="<?php echo ($role == 'admin') ? '../admin/dashboard.php' : (($role == 'siswa') ? '../siswa/dashboard.php' : '../index.php'); ?>">
                 <i class="bi bi-building"></i> Pengaduan Sarana
             </a>
             
@@ -45,7 +45,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                                 <i class="bi bi-person-circle"></i> <?php echo $nama; ?>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="logout.php">
+                                <li><a class="dropdown-item" href="../logout.php">
                                     <i class="bi bi-box-arrow-right"></i> Logout
                                 </a></li>
                             </ul>
@@ -63,7 +63,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="siswa/history.php">
+                            <a class="nav-link" href="../siswa/history.php">
                                 <i class="bi bi-clock-history"></i> Riwayat
                             </a>
                         </li>
@@ -80,13 +80,13 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                         
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="index.php">Home</a>
+                            <a class="nav-link" href="../index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php?role=admin">Login Admin</a>
+                            <a class="nav-link" href="../login.php?role=admin">Login Admin</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php?role=siswa">Login Siswa</a>
+                            <a class="nav-link" href="../login.php?role=siswa">Login Siswa</a>
                         </li>
                     <?php endif; ?>
                 </ul>

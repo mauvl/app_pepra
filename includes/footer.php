@@ -10,10 +10,9 @@
                 <div class="col-md-6 text-md-end">
                     <p class="mb-0">
                         <strong>Kontak:</strong> admin@pengaduan.sch.id<br>
-                        <strong>Telp:</strong> (021) 1234-5678
                     </p>
                     <p class="text-muted mt-2">
-                        &copy; <?php echo date('Y'); ?> SMK Teknologi Informasi. All rights reserved.
+                        &copy; <?php echo date('Y'); ?> Maulida Safa Azzahra. All rights reserved.
                     </p>
                 </div>
             </div>
