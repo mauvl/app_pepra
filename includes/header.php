@@ -68,6 +68,11 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="../admin/kelola_akun.php">
+                                <i class="bi bi-people"></i> Kelola Akun
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <span class="nav-link">
                                 <i class="bi bi-person-circle"></i> <?php echo $nama; ?>
                             </span>

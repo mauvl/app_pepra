@@ -276,6 +276,78 @@ class Functions {
             'total_pages' => ceil($total / $per_page)
         ];
     }
+
+        // ==================== MANAJEMEN SISWA ====================
+    public function getAllSiswa($order = 'nama') {
+        $sql = "SELECT * FROM siswa ORDER BY $order";
+        return $this->db->fetchAll($sql);
+    }
+
+    public function getSiswaByNis($nis) {
+        $sql = "SELECT * FROM siswa WHERE nis = ?";
+        return $this->db->fetchOne($sql, [$nis]);
+    }
+
+    public function addSiswa($data) {
+        // data: nis, nama, kelas, password, email (opsional), foto (opsional)
+        if (isset($data['password'])) {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        }
+        return $this->db->insert('siswa', $data);
+    }
+
+    public function updateSiswa($nis, $data) {
+        if (isset($data['password']) && !empty($data['password'])) {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        } else {
+            unset($data['password']);
+        }
+        return $this->db->update('siswa', $data, ['nis' => $nis]);
+    }
+
+    public function deleteSiswa($nis) {
+        return $this->db->delete('siswa', ['nis' => $nis]);
+    }
+
+    public function resetPasswordSiswa($nis, $newPassword) {
+        $hash = password_hash($newPassword, PASSWORD_DEFAULT);
+        return $this->db->update('siswa', ['password' => $hash], ['nis' => $nis]);
+    }
+
+    // ==================== MANAJEMEN ADMIN ====================
+    public function getAllAdmin() {
+        $sql = "SELECT * FROM admin ORDER BY nama_lengkap";
+        return $this->db->fetchAll($sql);
+    }
+
+    public function getAdminById($id) {
+        $sql = "SELECT * FROM admin WHERE id_admin = ?";
+        return $this->db->fetchOne($sql, [$id]);
+    }
+
+    public function addAdmin($data) {
+        // data: username, password, nama_lengkap, email (opsional)
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        return $this->db->insert('admin', $data);
+    }
+
+    public function updateAdmin($id, $data) {
+        if (isset($data['password']) && !empty($data['password'])) {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        } else {
+            unset($data['password']);
+        }
+        return $this->db->update('admin', $data, ['id_admin' => $id]);
+    }
+
+    public function deleteAdmin($id) {
+        return $this->db->delete('admin', ['id_admin' => $id]);
+    }
+
+    public function resetPasswordAdmin($id, $newPassword) {
+        $hash = password_hash($newPassword, PASSWORD_DEFAULT);
+        return $this->db->update('admin', ['password' => $hash], ['id_admin' => $id]);
+    }
 }
 
 // Global helper function

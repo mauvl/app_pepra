@@ -39,8 +39,8 @@ $stats = $functions->getStats();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="filter.php">
-                            <i class="bi bi-funnel"></i> Filter
+                        <a class="nav-link" href="kelola_akun.php">
+                            <i class="bi bi-people"></i> Kelola Akun
                         </a>
                     </li>
                     <li class="nav-item dropdown">
