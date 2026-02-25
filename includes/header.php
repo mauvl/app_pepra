@@ -40,6 +40,11 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                                 <i class="bi bi-list-check"></i> Aspirasi
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../admin/kelola_akun.php">
+                                <i class="bi bi-people"></i> Kelola Akun
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle"></i> <?php echo $nama; ?>
@@ -65,11 +70,6 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                         <li class="nav-item">
                             <a class="nav-link" href="../siswa/history.php">
                                 <i class="bi bi-clock-history"></i> Riwayat
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../admin/kelola_akun.php">
-                                <i class="bi bi-people"></i> Kelola Akun
                             </a>
                         </li>
                         <li class="nav-item">
