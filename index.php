@@ -47,7 +47,7 @@ if (isset($_SESSION['role'])) {
                 </div>
             </div>
             <div class="col-md-6">
-                <img src="https://cdn.pixabay.com/photo/2017/08/06/22/01/books-2596809_1280.jpg" 
+                <img src="https://www.smadwiwarna.sch.id/wp-content/uploads/2022/05/sarana-dan-prasarana-sekolah.jpg" 
                      alt="School Building" class="img-fluid rounded shadow">
             </div>
         </div>

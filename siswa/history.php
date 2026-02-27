@@ -3,11 +3,27 @@ require_once '../config/session.php';
 require_once '../includes/functions.php';
 redirectIfNotSiswa();
 
+
+
 $nis = $_SESSION['user_id'];
 
 // Get aspirasi for current siswa using Functions helper
 $aspirasi = functions()->getAspirasiBySiswa($nis);
 ?>
+
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,6 +32,7 @@ $aspirasi = functions()->getAspirasiBySiswa($nis);
     <title>Riwayat Aspirasi - Siswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>
@@ -85,9 +102,16 @@ $aspirasi = functions()->getAspirasiBySiswa($nis);
                             </td>
                             <td>
                                 <a href="detail.php?id=<?php echo $row['id_aspirasi']; ?>" 
-                                   class="btn btn-sm btn-outline-warning">
+                                class="btn btn-sm btn-outline-warning">
                                     <i class="bi bi-eye"></i> Detail
                                 </a>
+                                <?php if ($row['status'] == 'Menunggu'): ?>
+                                    <a href="hapus_aspirasi.php?id=<?php echo $row['id_aspirasi']; ?>" 
+                                    class="btn btn-sm btn-outline-danger" 
+                                    onclick="return confirm('Yakin ingin menghapus aspirasi ini?')">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
