@@ -572,3 +572,74 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
         height: 45px;
     }
 }
+
+/* ========== TAMBAHAN UNTUK DASHBOARD AGAR TIDAK NYATU DENGAN BACKGROUND ========== */
+
+/* Card dengan background putih solid + bayangan halus (tidak transparan) */
+.card {
+    background-color: #ffffff; /* putih bersih, tidak menyatu dengan bg biru pastel */
+    border: 1px solid rgba(30, 58, 95, 0.1); /* garis tipis navy lembut */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Jika ingin card ringkasan cepat sedikit berbeda tapi tetap dalam tema */
+.card-ringkasan {
+    background-color: #ffffff;
+}
+
+/* Header card menggunakan warna sekunder yang lembut (biru pastel) */
+.card-header {
+    background-color: #e6f0f5; /* biru sangat muda, beda dengan bg body */
+    border-bottom: 1px solid rgba(30, 58, 95, 0.1);
+    color: var(--headline);
+}
+
+/* Tombol "Kelola Semua Aspirasi" - icon ikut warna teks tombol */
+.btn .bi {
+    color: inherit !important; /* icon mewarisi warna teks tombol */
+    transition: none;
+}
+
+/* Pastikan icon di dalam tombol primary tetap putih */
+.btn-primary .bi,
+.btn-warning .bi,
+.btn-primary i,
+.btn-warning i {
+    color: #ffffff !important;
+}
+
+/* Hover tombol tetap konsisten */
+.btn-primary:hover .bi,
+.btn-primary:hover i {
+    color: #ffffff !important;
+}
+
+/* Jika ada tombol outline, icon ikut warna outline */
+.btn-outline-primary .bi {
+    color: var(--button) !important;
+}
+.btn-outline-primary:hover .bi {
+    color: #ffffff !important;
+}
+
+/* Stat card (total, menunggu, proses, selesai) biar tidak transparan */
+.stat-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(30, 58, 95, 0.1);
+}
+
+/* Progress bar tetap menggunakan warna highlight */
+.progress-bar {
+    background-color: var(--highlight);
+}
+
+/* Card di sidebar (tips, informasi, ringkasan) */
+.card.mb-3, .card.mb-3, .card:not(.stat-card) {
+    background-color: #ffffff;
+}
+
+/* Tabel */
+.table thead th {
+    background-color: #e6f0f5;
+    color: var(--headline);
+}
