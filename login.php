@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card shadow">
                     <div class="card-header text-center">
                         <h4 class="mb-0">
-                            <i class="bi bi-lock"></i> Login 
+                            </i> Login 
                             <?php echo $role == 'admin' ? 'Admin' : 'Siswa'; ?>
                         </h4>
                     </div>
@@ -68,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-box-arrow-in-right"></i> Login
+                                    </i> Login
                                 </button>
                                 <a href="index.php" class="btn btn-outline-secondary">
-                                    <i class="bi bi-house"></i> Kembali
+                                    </i> Kembali
                                 </a>
                             </div>
                         </form>

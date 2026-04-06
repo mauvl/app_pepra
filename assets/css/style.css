@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
 :root {
-    --bg-color: #faeee7;
-    --headline: #33272a;
-    --paragraph: #594a4e;
-    --button: #ff8ba7;
-    --button-text: #33272a;
-    --stroke: #33272a;
+    --bg-color: #f2f8ff;       /* biru sangat pastel */
+    --headline: #1e3a5f;       /* navy lembut */
+    --paragraph: #2c4c6e;      /* biru keabuan */
+    --button: #6c9ebf;         /* biru pastel utama */
+    --button-text: #ffffff;     /* putih bersih */
+    --stroke: #1e3a5f;
     --main-white: #ffffff;
-    --highlight: #ff8ba7;
-    --secondary: #ffc6c7;
-    --tertiary: #c3f0ca;
+    --highlight: #4a8db7;      /* biru agak gelap untuk aksen */
+    --secondary: #b8d8e8;      /* biru muda pastel */
+    --tertiary: #cfe5ef;       /* biru sangat muda */
     
     --font-primary: 'Inter', sans-serif;
     --font-heading: 'Poppins', sans-serif;
@@ -35,12 +35,18 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    animation: fadeIn 0.5s ease-in-out;
+    animation: fadeInUp 0.6s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -64,6 +70,16 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     font-size: 1.5rem;
     letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.05);
 }
 
 .navbar-brand i {
@@ -117,11 +133,17 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--main-white);
     transition: var(--transition);
     overflow: hidden;
+    animation: fadeInUp 0.6s ease-out backwards;
+    animation-delay: calc(0.1s * var(--order, 0));
 }
+
+.card:nth-child(1) { --order: 1; }
+.card:nth-child(2) { --order: 2; }
+.card:nth-child(3) { --order: 3; }
 
 .card:hover {
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
 }
 
 .card-header {
@@ -167,7 +189,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-outline-primary {
-    color: var(--button-text);
+    color: var(--button);
     border-color: var(--button);
 }
 
@@ -192,7 +214,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-outline-warning {
-    color: var(--button-text);
+    color: var(--highlight);
     border-color: var(--highlight);
 }
 
@@ -308,7 +330,7 @@ h1, h2, h3, h4, h5, h6 {
 .form-control:focus,
 .form-select:focus {
     border-color: var(--highlight);
-    box-shadow: 0 0 0 3px rgba(255, 139, 167, 0.1);
+    box-shadow: 0 0 0 3px rgba(74, 141, 183, 0.15);
     outline: none;
 }
 
@@ -332,7 +354,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .table-hover tbody tr:hover {
-    background-color: rgba(255, 198, 199, 0.2);
+    background-color: rgba(184, 216, 232, 0.2);
 }
 
 /* Alerts */
@@ -382,19 +404,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Utility */
-.text-warning {
+.text-primary {
     color: var(--highlight) !important;
 }
 
-.bg-warning {
+.bg-primary {
     background-color: var(--highlight) !important;
 }
 
-.border-warning {
+.border-primary {
     border-color: var(--highlight) !important;
 }
 
-/* ========== OVERRIDE WARNA BIRU ========== */
+/* Override warna biru default Bootstrap */
 a:not(.btn):not(.nav-link):not(.dropdown-item) {
     color: var(--headline);
 }
@@ -403,12 +425,10 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     color: var(--highlight);
 }
 
-/* Ikon */
 .bi {
     color: var(--headline);
 }
 
-/* Ikon dalam konteks tertentu */
 .navbar-brand .bi,
 .card-header .bi,
 .stat-card .bi,
@@ -417,7 +437,6 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     color: var(--highlight);
 }
 
-/* Dropdown */
 .dropdown-item {
     color: var(--headline);
 }
@@ -429,7 +448,6 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     color: var(--highlight);
 }
 
-/* Pagination */
 .page-link {
     color: var(--headline);
     border-color: var(--secondary);
@@ -444,7 +462,6 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     color: var(--button-text);
 }
 
-/* Breadcrumb */
 .breadcrumb-item a {
     color: var(--headline);
 }
@@ -452,7 +469,6 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     color: var(--paragraph);
 }
 
-/* List group */
 .list-group-item {
     color: var(--paragraph);
     border-color: var(--secondary);
@@ -463,17 +479,13 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     color: var(--button-text);
 }
 
-/* Progress bar */
 .progress-bar {
     background-color: var(--highlight);
 }
 
-/* Close button */
 .btn-close {
     filter: brightness(0) saturate(100%) invert(15%) sepia(5%) saturate(5%) hue-rotate(0deg) brightness(95%) contrast(90%);
 }
-
-/* ========== AKHIR OVERRIDE ========== */
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -487,5 +499,76 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     
     .card-header {
         padding: 0.75rem 1rem;
+    }
+}
+
+/* Animasi tambahan untuk gambar */
+.img-fluid {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.img-fluid:hover {
+    transform: scale(1.01);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Efek loading untuk card icon */
+.card i {
+    transition: transform 0.3s ease;
+}
+
+.card:hover i {
+    transform: translateY(-5px);
+}
+
+/* ========== PERUBAHAN CENTER & HILANGKAN SHADOW GAMBAR ========== */
+.img-fluid {
+    box-shadow: none !important;   /* menghilangkan bayangan */
+    transition: transform 0.3s ease;
+}
+
+.img-fluid:hover {
+    transform: scale(1.01);        /* efek hover lembut tanpa bayangan */
+}
+
+/* Memastikan teks dan tombol lebih center pada layar kecil */
+@media (max-width: 768px) {
+    .text-md-start {
+        text-align: center !important;
+    }
+    
+    .justify-content-md-start {
+        justify-content: center !important;
+    }
+}
+
+/* ========== MEMPERBESAR LOGO & TEKS PEPRA DI NAVBAR ========== */
+.navbar {
+    padding: 1rem 0; /* menambah tinggi navbar */
+}
+
+.navbar-brand {
+    font-size: 2rem; /* perbesar teks PEPRA */
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.navbar-logo {
+    height: 55px;  /* perbesar logo */
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+    transform: scale(1.05);
+}
+
+/* Agar tetap responsif di HP */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.6rem;
+    }
+    .navbar-logo {
+        height: 45px;
     }
 }

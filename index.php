@@ -22,14 +22,15 @@ if (isset($_SESSION['role'])) {
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="bi bi-building"></i> Pengaduan Sarana
+                <img src="assets/logo.png" alt="Logo" class="navbar-logo me-2">
+                PEPRA
             </a>
         </div>
     </nav>
 
     <div class="container py-5">
-        <div class="row align-items-center">
-            <div class="col-md-6">
+        <div class="row align-items-center justify-content-center text-center text-md-start">
+            <div class="col-md-6 mb-4 mb-md-0">
                 <h1 class="display-4 fw-bold text-primary mb-4">
                     Sistem Pengaduan Sarana Sekolah
                 </h1>
@@ -37,7 +38,7 @@ if (isset($_SESSION['role'])) {
                     Platform digital untuk menyampaikan aspirasi dan pengaduan 
                     terkait sarana dan prasarana sekolah secara efektif dan efisien.
                 </p>
-                <div class="d-flex gap-3">
+                <div class="d-flex gap-3 justify-content-center justify-content-md-start">
                     <a href="login.php?role=admin" class="btn btn-primary btn-lg px-4">
                         <i class="bi bi-person-badge"></i> Login Admin
                     </a>
@@ -47,12 +48,13 @@ if (isset($_SESSION['role'])) {
                 </div>
             </div>
             <div class="col-md-6">
-                <img src="https://www.smadwiwarna.sch.id/wp-content/uploads/2022/05/sarana-dan-prasarana-sekolah.jpg" 
-                     alt="School Building" class="img-fluid rounded shadow">
+                <img src="assets/college.png" 
+                     alt="School Building" 
+                     class="img-fluid rounded">
             </div>
         </div>
 
-        <div class="row mt-5 pt-5">
+        <div class="row mt-5 pt-5 justify-content-center">
             <div class="col-md-4 mb-4">
                 <div class="card h-100 border-0 shadow-sm">
                     <div class="card-body text-center p-4">
