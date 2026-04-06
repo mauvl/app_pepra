@@ -38,10 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="col-md-6 col-lg-4">
                 <div class="card shadow">
                     <div class="card-header text-center">
-                        <h4 class="mb-0">
-                            </i> Login 
-                            <?php echo $role == 'admin' ? 'Admin' : 'Siswa'; ?>
-                        </h4>
+                        <h4 class="mb-0">Login <?php echo $role == 'admin' ? 'Admin' : 'Siswa'; ?></h4>
                     </div>
                     <div class="card-body p-4">
                         <?php if ($error): ?>
@@ -66,13 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             
+                            <!-- Toggle password sederhana dengan checkbox -->
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="showPassword">
+                                <label class="form-check-label" for="showPassword">Lihat Password</label>
+                            </div>
+                            
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    </i> Login
-                                </button>
-                                <a href="index.php" class="btn btn-outline-secondary">
-                                    </i> Kembali
-                                </a>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                                <a href="index.php" class="btn btn-outline-secondary">Kembali</a>
                             </div>
                         </form>
                         
@@ -93,6 +92,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script>
+        // Minimalis, tanpa animasi
+        const pwInput = document.getElementById('password');
+        const toggleCheck = document.getElementById('showPassword');
+        
+        toggleCheck.addEventListener('change', function() {
+            if (this.checked) {
+                pwInput.type = 'text';
+            } else {
+                pwInput.type = 'password';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -17,6 +17,16 @@ if (isset($_SESSION['role'])) {
     <title>Sistem Pengaduan Sarana Sekolah</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Memastikan ikon pada tombol Login Admin berwarna putih */
+        .btn-primary i {
+            color: white !important;
+        }
+        /* Opsional: jika ingin ikon pada tombol outline tetap biru (tidak diubah) */
+        .btn-outline-primary i {
+            color: #0d6efd; /* warna biru default bootstrap */
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
