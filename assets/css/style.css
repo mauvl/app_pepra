@@ -643,3 +643,31 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     background-color: #e6f0f5;
     color: var(--headline);
 }
+
+/* ========== BADGE STATUS UNTUK ASPIRASI ========== */
+.badge-menunggu {
+    background-color: #fef9e6; /* kuning sangat lembut */
+    color: #b78103;
+    border: 1px solid #ffe8a1;
+}
+.badge-proses {
+    background-color: #e6f3ff; /* biru sangat lembut */
+    color: #0a5b8c;
+    border: 1px solid #b8dcff;
+}
+.badge-selesai {
+    background-color: #e6f9ed; /* hijau sangat lembut */
+    color: #1e7b48;
+    border: 1px solid #b8e6c9;
+}
+.badge-duplikat {
+    background-color: #f0f0f0; /* abu-abu lembut */
+    color: #5a5a5a;
+    border: 1px solid #d0d0d0;
+}
+/* Pastikan class badge-* yang tidak dikenali tetap aman */
+.badge {
+    font-weight: 500;
+    padding: 0.4rem 0.75rem;
+    border-radius: 20px;
+}

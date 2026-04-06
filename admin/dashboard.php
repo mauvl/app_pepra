@@ -31,6 +31,7 @@ $kategoriTerbanyak = !empty($kategoriTerfilter) ? $kategoriTerfilter[0] : null;
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
+    <!-- Navbar (sama seperti sebelumnya) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -199,7 +200,7 @@ $kategoriTerbanyak = !empty($kategoriTerfilter) ? $kategoriTerfilter[0] : null;
                     </div>
                 </div>
 
-                <!-- Ringkasan Cepat (warna netral, tidak mencolok) -->
+                <!-- Ringkasan Cepat -->
                 <div class="card">
                     <div class="card-header">
                         <i class="bi bi-lightbulb"></i> Ringkasan Cepat
@@ -223,6 +224,9 @@ $kategoriTerbanyak = !empty($kategoriTerfilter) ? $kategoriTerfilter[0] : null;
             </div>
         </div>
     </div>
+
+    <!-- Tambahkan footer -->
+    <?php include '../includes/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
