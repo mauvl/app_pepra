@@ -21,5 +21,23 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fungsi untuk membuat dropdown hover pada semua elemen dengan class .dropdown
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+            dropdown.addEventListener('mouseenter', function() {
+                this.classList.add('show');
+                var menu = this.querySelector('.dropdown-menu');
+                if (menu) menu.classList.add('show');
+            });
+            dropdown.addEventListener('mouseleave', function() {
+                this.classList.remove('show');
+                var menu = this.querySelector('.dropdown-menu');
+                if (menu) menu.classList.remove('show');
+            });
+        });
+    });
+    </script>
 </body>
 </html>

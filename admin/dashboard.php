@@ -29,9 +29,19 @@ $kategoriTerbanyak = !empty($kategoriTerfilter) ? $kategoriTerfilter[0] : null;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* Hover dropdown untuk Bootstrap 5 */
+        .dropdown-hover:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+        .dropdown-hover .dropdown-menu:hover {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navbar (sama seperti sebelumnya) -->
+    <!-- Navbar dengan hover dropdown -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -58,11 +68,12 @@ $kategoriTerbanyak = !empty($kategoriTerfilter) ? $kategoriTerfilter[0] : null;
                             <i class="bi bi-people"></i> Kelola Akun
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                    <!-- Dropdown HOVER untuk Admin -->
+                    <li class="nav-item dropdown dropdown-hover">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle"></i> <?php echo $_SESSION['nama']; ?>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="../logout.php">
                                 <i class="bi bi-box-arrow-right"></i> Logout
                             </a></li>

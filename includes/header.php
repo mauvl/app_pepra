@@ -15,6 +15,20 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        /* Hover dropdown untuk Bootstrap 5 */
+        .dropdown-hover:hover .dropdown-menu {
+            display: block;
+            margin-top: 0; /* hilangkan jarak agar tidak patah */
+        }
+        .dropdown-hover .dropdown-menu {
+            margin-top: 0.5rem; /* opsional */
+        }
+        /* Agar dropdown tidak hilang saat kursor pindah ke menu */
+        .dropdown-hover .dropdown-menu:hover {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
@@ -45,11 +59,12 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                                 <i class="bi bi-people"></i> Kelola Akun
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <!-- Dropdown HOVER untuk Admin -->
+                        <li class="nav-item dropdown dropdown-hover">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle"></i> <?php echo $nama; ?>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="../logout.php">
                                     <i class="bi bi-box-arrow-right"></i> Logout
                                 </a></li>
@@ -72,15 +87,16 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : '';
                                 <i class="bi bi-clock-history"></i> Riwayat
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <span class="nav-link">
+                        <!-- Dropdown HOVER untuk Siswa -->
+                        <li class="nav-item dropdown dropdown-hover">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSiswa" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle"></i> <?php echo $nama; ?>
-                            </span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../logout.php">
-                                <i class="bi bi-box-arrow-right"></i> Logout
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownSiswa">
+                                <li><a class="dropdown-item" href="../logout.php">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </a></li>
+                            </ul>
                         </li>
                         
                     <?php else: ?>
